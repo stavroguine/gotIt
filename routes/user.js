@@ -1,6 +1,8 @@
 var express = require('express');
 var session = require('express-session')
 var router = express.Router();
+var User = require('../usertools');
+
 
 /* Unlogged. */
 router.get('/', function(req, res, next) {

@@ -18,10 +18,8 @@ router.get('/', function(req, res, next) {
       }
     }
   });
-
-  
 });
 
-//res.send('<h1>Name: </h1>' + user.username + '<h2>Mail: </h2>' + user.email + '<br><a type="button" href="/logout">Logout</a>')
+//
 
 module.exports = router;
