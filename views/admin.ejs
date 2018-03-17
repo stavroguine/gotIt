@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>user.username</title>
+    <title><%= user.username %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
     <h1>Hi !</h1>
-    <p>Welcome <%= user.username %></p>
+    <p>Welcome <%= user.username %> admin ! ;)</p>
     <p>Your email is : <%= user.email %></p>
+    <p>Your user page is ... let me guess ... Ohhh ----> <a href="/user/<%= user.username %>">Here</a></p>
   </body>
 </html>
