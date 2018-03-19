@@ -16,6 +16,7 @@ var admin = require('./routes/admin');
 var login = require('./routes/login');
 var signup = require('./routes/signup');
 var logout = require('./routes/logout');
+var test = require('./routes/test');
 
 //connect to MongoDB
 mongoose.connect('mongodb://localhost/gotit');
@@ -55,6 +56,7 @@ app.use('/admin', admin);
 app.use('/login', login);
 app.use('/signup', signup);
 app.use('/logout', logout);
+app.use('/test', test);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
