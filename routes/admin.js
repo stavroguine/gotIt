@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../usertools');
+var User = require('../tools/usertools');
 
 /* Admin page. */
 router.get('/', function(req, res, next) {
@@ -14,10 +14,18 @@ router.get('/', function(req, res, next) {
         err.status = 400;
         return next(err);
       } else {
-        return res.render('admin', { user: user });
+        if(req.session.role == "Admin"){
+          return res.render('admin', { user: user });
+        } else {
+          console.log(req.session.role);
+          var err = new Error('Not authorized! Admin zone !!!');
+          err.status = 400;
+          return next(err);
+        }
       }
     }
   });
+  
 });
 
 //

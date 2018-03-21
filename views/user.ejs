@@ -7,7 +7,9 @@
   <body>
     <h1>Hi <%= user.username %> !</h1>
     <p>Your email is : <%= user.email %></p>
-    <p>Ohh ! You're connected ! So right now it's the only condition to access the admin page. <a href='/admin'>Try it ! ;)</a></p>
+    <%if (role == "Admin") { %>
+    <p>Ohh ! You're an admin ! :o Please, be my guest : <a href='/admin'>enter the matrix ! ;)</a></p>
+    <% } %>
     <br>
     <a href='/logout'>Logout ! (We're sad :'( )</a>
   </body>

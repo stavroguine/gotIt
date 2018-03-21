@@ -17,6 +17,7 @@ var login = require('./routes/login');
 var signup = require('./routes/signup');
 var logout = require('./routes/logout');
 var test = require('./routes/test');
+// var authenticate = require("./tools/authentication");
 
 //connect to MongoDB
 mongoose.connect('mongodb://localhost/gotit');
@@ -48,6 +49,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+// app.use(authenticate);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);

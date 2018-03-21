@@ -1,10 +1,27 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../usertools');
+var User = require('../tools/usertools');
 
 /* Signup. */
 router.get('/', function(req, res, next) {
-  res.render('signup', { title: 'Register now !' });
+  if(req.session){
+    User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+          return res.redirect('/user/'+user.username);
+        }
+      }
+    });
+  } else {
+    res.render('signup', { title: 'Register now !' });
+  }
 });
 
 //POST route for updating data
@@ -28,6 +45,7 @@ router.post('/', function (req, res, next) {
       username: req.body.username,
       password: req.body.password,
       passwordConf: req.body.passwordConf,
+      role:req.body.role,
     }
 
     User.create(userData, function (error, user) {
