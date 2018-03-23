@@ -17,6 +17,7 @@ var login = require('./routes/login');
 var signup = require('./routes/signup');
 var logout = require('./routes/logout');
 var test = require('./routes/test');
+var form = require('./routes/form');
 // var authenticate = require("./tools/authentication");
 
 //connect to MongoDB
@@ -59,6 +60,7 @@ app.use('/login', login);
 app.use('/signup', signup);
 app.use('/logout', logout);
 app.use('/test', test);
+app.use('/form', form);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

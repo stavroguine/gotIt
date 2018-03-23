@@ -9,5 +9,11 @@
     <p>Welcome <%= user.username %> admin ! ;)</p>
     <p>Your email is : <%= user.email %></p>
     <p>Your user page is ... let me guess ... Ohhh ----> <a href="/user/<%= user.username %>">Here</a></p>
+    <div class="create-form">
+      <form action="/form" method="post">
+          <input type="text" name="name" placeholder="Form title" required="true">
+          <input type="submit" value="Create the form !">
+      </form>
+  </div>
   </body>
 </html>
