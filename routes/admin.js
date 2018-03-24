@@ -16,9 +16,10 @@ router.get('/', function(req, res, next) {
         return next(err);
       } else {
         if(req.session.role == "Admin"){
-          var query = Form.find({}).select({ "name": 1, "_id": 0}).exec();
-          console.log(query);
-          return res.render('admin', { user: user, forms: query });
+          Form.find({}, function(err, forms) {
+            console.log(forms);
+            return res.render('admin', { user: user, forms: forms });
+           });
         } else {
           //console.log(req.session.role);
           var err = new Error('Not authorized! Admin zone !!!');

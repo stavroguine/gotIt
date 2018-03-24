@@ -47,14 +47,7 @@ FormSchema.pre('save', function (next) {
   next();
 });
 
-var Allformsname = function(req, res, next) {
-  var query = db.forms.find({}).select({ "name": 1, "_id": 0});
 
-  query.exec(function (err, someValue) {
-      if (err) return next(err);
-      res.send(someValue);
-  });
-};
 
 
 // Form.findByIdAndUpdate({_id: 'entityId'}, {$inc: { seq: 1} }, function(error, Form) {

@@ -17,7 +17,7 @@
   </div>
   <div class="list-forms">
     <% for(var i=0; i < forms.length; i++) { %>
-      <div class="form"><% forms[i].name %></div>
+      <div class="form"><%= forms[i].name %> <a href="/form/<%=forms[i].name%>">modify</a> <a href="/form/<%=forms[i].name%>/delete">delete</a> <a href="/form/<%=forms[i].name%>/start">start</a></div>
     <% } %>
   </div>
   </body>
