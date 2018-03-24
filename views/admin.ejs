@@ -15,5 +15,10 @@
           <input type="submit" value="Create the form !">
       </form>
   </div>
+  <div class="list-forms">
+    <% for(var i=0; i < forms.length; i++) { %>
+      <div class="form"><% forms[i].name %></div>
+    <% } %>
+  </div>
   </body>
 </html>

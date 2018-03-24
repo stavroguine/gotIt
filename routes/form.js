@@ -16,7 +16,7 @@ router.post('/', function(req, res, next) {
         if(error){
             res.send(error);
         } else {
-            return res.redirect('/'+name);
+            return res.redirect('/admin');
         }
     });
 });

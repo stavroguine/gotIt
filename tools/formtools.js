@@ -5,15 +5,14 @@ var Question = new mongoose.Schema({
   name: {
     type: String,
     unique: false,  
-    required: true,
+    required: false,
     trim: true
   },
-  authorid: {
-      type: String,
-      unique: false,
-      required: true,
-      trim: true
-    }
+  postedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+},
+    _id: false
 })
   
 var FormSchema = new mongoose.Schema({
@@ -23,12 +22,10 @@ var FormSchema = new mongoose.Schema({
       required: true,
       trim: true
     },
-    authorid: {
-        type: String,
-        unique: false,
-        required: true,
-        trim: true
-      },
+    postedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
     version: {
       type: Number,
       required: true,
@@ -37,7 +34,8 @@ var FormSchema = new mongoose.Schema({
     },
     questions:{
       type: [ Question ],
-      index: false
+      index: false,
+      default: []
     },
   });
 
@@ -48,6 +46,16 @@ FormSchema.pre('save', function (next) {
 }
   next();
 });
+
+var Allformsname = function(req, res, next) {
+  var query = db.forms.find({}).select({ "name": 1, "_id": 0});
+
+  query.exec(function (err, someValue) {
+      if (err) return next(err);
+      res.send(someValue);
+  });
+};
+
 
 // Form.findByIdAndUpdate({_id: 'entityId'}, {$inc: { seq: 1} }, function(error, Form) {
 //   if(error)
