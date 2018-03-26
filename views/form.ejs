@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= name %></title>
+    <title><%= form.name %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script>
+        console.log("name = ", <%= form.name %>);
+    </script>        
   </head>
   <body>
-    <h1>you're editing the form <%= name %></h1>
+    <h1>you're editing the form <%= form.name %></h1>
   </body>
 </html>
