@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../tools/usertools');
+var User = require('../model/usertools');
 
 /* Teeest page. */
 router.get('/', function(req, res, next) {

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../tools/usertools');
+var User = require('../model/usertools');
 
 router.get('/', function(req, res, next) {
   User.findById(req.session.userId)
@@ -26,7 +26,6 @@ router.post('/', function (req, res, next) {
           return next(err);
       } else {
         req.session.userId = user._id;
-        console.log(user._id);
         req.session.role = user.role;
         return res.redirect('/user/'+user.username);
       }

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../tools/usertools');
+var User = require('../model/usertools');
 
 /* Signup. */
 router.get('/', function(req, res, next) {
@@ -27,7 +27,6 @@ router.get('/', function(req, res, next) {
 //POST route for updating data
 router.post('/', function (req, res, next) {
   // confirm that user typed same password twice
-  console.log('coucou');
   if (req.body.password !== req.body.passwordConf) {
     var err = new Error('Passwords do not match.');
     err.status = 400;

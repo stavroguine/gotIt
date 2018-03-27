@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../tools/usertools');
-var Form = require('../tools/formtools');
+var User = require('../model/usertools');
+var Form = require('../model/formtools');
 
 /* Admin page. */
 router.get('/', function(req, res, next) {
@@ -17,11 +17,9 @@ router.get('/', function(req, res, next) {
       } else {
         if(req.session.role == "Admin"){
           Form.find({}, function(err, forms) {
-            console.log(forms);
             return res.render('admin', { user: user, forms: forms });
            });
         } else {
-          //console.log(req.session.role);
           var err = new Error('Not authorized! Admin zone !!!');
           err.status = 400;
           return next(err);

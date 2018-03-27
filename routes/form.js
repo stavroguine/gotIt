@@ -1,7 +1,14 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../tools/usertools');
-var Form = require('../tools/formtools');
+const express = require('express');
+const router = express.Router();
+const {
+  getUser, 
+  getRole, 
+  getForms, 
+  getForm,
+  removeForm
+} = require('../model/action');
+
+const Form = require('../model/formtools');
 
 router.get('/', function(req, res, next) {
     res.redirect('/admin');
@@ -16,67 +23,56 @@ router.post('/', function(req, res, next) {
         if(error){
             res.send(error);
         } else {
-            return res.redirect('/form');
-            return res.render('form', { name: req.body.name });
+            return res.redirect('/admin');
+            //return res.render('form', { name: req.body.name });
         }
     });
 });
 
 /* GET form details */
 router.get('/:name', function(req, res, next) {
-    User.findById(req.session.userId)
-    .exec(function (error, user) {
-      if (error) {
-        return next(error);
-      } else {
-        if (user === null) {
-          var err = new Error('Not authorized! Go back!');
-          err.status = 400;
-          return next(err);
-        } else {
-          if(req.session.role == "Admin"){
-            name = req.params.name;
-            Form.findOne({name: name}, function(err, form) {
-                console.log(form.name);
-                return res.render('form', { form: form });
-            });    
-          } else {
-            var err = new Error('Not authorized! Admin zone !!!');
-            err.status = 400;
-            return next(err);
-          }
-        }
-      }
-    });
+  getRole(req.session).then((role)=>{
+    if(role == "Admin"){
+      getForm(req.params.name).then((form)=>{
+        return res.render('form', { form: form });
+      })  
+    }
+  }).catch(e=>{
+    res.render('error',{e:e})
+  })
 });
 
 /* GET form details */
 router.get('/:name/delete', function(req, res, next) {
-    User.findById(req.session.userId)
-    .exec(function (error, user) {
-      if (error) {
-        return next(error);
-      } else {
-        if (user === null) {
-          var err = new Error('Not authorized! Go back!');
-          err.status = 400;
-          return next(err);
-        } else {
-          if(req.session.role == "Admin"){
-            name = req.params.name;
-            Form.remove({name: name}, function(err, form) {
-              Form.find({}, function(err, forms) {
-                return res.render('admin', { user: user, forms: forms });
-              });
-            });    
-          } else {
-            var err = new Error('Not authorized! Admin zone !!!');
-            err.status = 400;
-            return next(err);
-          }
-        }
+  getUser(req.session).then((user)=>{
+    getRole(req.session).then((role)=>{
+
+      if(role == "Admin"){
+
+        removeForm(req.params.name).then(()=>{
+      
+          getForms().then((forms)=>{
+            return res.render('admin', { user: user, forms: forms });
+          }).catch(e=>{
+            console.log("error = ",e);
+            res.json("c'est mort")
+          })
+        }).catch(e=>{
+          console.log("error = ",e);
+          res.json("c'est mort 2")
+        })
       }
-    });
+    }).catch(e=>{
+      console.log("error = ",e);
+      res.json("c'est mort 3")
+    })
+  }).catch(e=>{
+    console.log("error = ",e);
+    res.json("c'est mort 4")
+  })
 });
+// .catch(e=>{
+//     res.render('error',{e:e})
+// })
 
 module.exports = router; 
