@@ -1,14 +1,13 @@
 var User = require('./usertools');
 var Form = require('./formtools');
 
-let lib = {};
-
+let action = {};
 
 /* Users Actions */
-lib.getUser = (session) => {
+action.getUsername = (session) => {
     return new Promise((resolve, reject)=>{
         User.findById(session.userId)
-        .exec(function (error, user) {
+        .exec((error, user) => {
             if (error) {
                 reject(error)
             } else {
@@ -17,15 +16,33 @@ lib.getUser = (session) => {
                     err.status = 400;
                     reject(err);
                 } else {
-                    resolve(user.username   );
+                    resolve(user.username);
                 }
             }
         })
     });
 }
 
+action.getUserObject = (session) => {
+    return new Promise((resolve, reject)=>{
+        User.findById(session.userId)
+        .exec((error, user) => {
+            if (error) {
+                reject(error)
+            } else {
+                if (user === null) {
+                    var err = new Error('Not authorized! Go back!');
+                    err.status = 400;
+                    reject(err);
+                } else {
+                    resolve(user); 
+                }
+            }
+        })
+    });
+}
 
-lib.getRole = (session) => {
+action.getRole = (session) => {
     return new Promise((resolve, reject)=>{
         User.findById(session.userId)
         .exec((err, user) => {
@@ -44,8 +61,22 @@ lib.getRole = (session) => {
     })
 }
 
+action.authenticate = (credentials) => {
+    return new Promise((resolve, reject)=>{
+        User.authenticate(credentials.email, credentials.password, (error, user) => {
+            if (error || !user) {
+                var err = new Error('Wrong email or password.');
+                err.status = 401;
+                reject(err);
+            } else {
+              resolve(user);
+            }
+        });
+    })
+}
+
 /* Forms Action */
-lib.getForms = () => {
+action.getForms = () => {
     return new Promise((resolve, reject)=>{
         Form.find({}, (err, forms) => {
             if(err){
@@ -57,7 +88,7 @@ lib.getForms = () => {
     })
 }
 
-lib.getForm = (formName) => {
+action.getForm = (formName) => {
     return new Promise((resolve, reject)=>{
         Form.findOne({name: formName}, (err, forms) => {
             if(err){
@@ -68,8 +99,20 @@ lib.getForm = (formName) => {
         });
     })
 }
+    
+action.createForm = (formData) => {
+    return new Promise((resolve, reject)=>{
+        Form.create(formData, (err, form) => {
+            if(err){
+                reject(err);
+            } else {
+                resolve(form);
+            }
+        });
+    })
+}
 
-lib.removeForm = (formName) => {
+action.removeForm = (formName) => {
     return new Promise((resolve, reject)=>{
         Form.remove({name: formName}, (err) => {
             if(err){
@@ -81,4 +124,4 @@ lib.removeForm = (formName) => {
     })
 }
 
-module.exports = lib
+module.exports = action;

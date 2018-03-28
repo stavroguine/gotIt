@@ -39,7 +39,7 @@ var FormSchema = new mongoose.Schema({
     },
   });
 
-FormSchema.pre('save', function (next) {
+FormSchema.pre('save', (next) => {
   var Form = this;
   if (Form.isNew && Form.questions.length === 0) {
     Form.questions = undefined;
@@ -47,14 +47,6 @@ FormSchema.pre('save', function (next) {
   next();
 });
 
-
-
-
-// Form.findByIdAndUpdate({_id: 'entityId'}, {$inc: { seq: 1} }, function(error, Form) {
-//   if(error)
-//       return next(error);
-//   Form.testvalue = Form.version;
-// });
-
 var Form = mongoose.model('Form', FormSchema);
+
 module.exports = Form;

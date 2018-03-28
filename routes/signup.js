@@ -3,10 +3,10 @@ var router = express.Router();
 var User = require('../model/usertools');
 
 /* Signup. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
   if(req.session){
     User.findById(req.session.userId)
-    .exec(function (error, user) {
+    .exec((error, user) => {
       if (error) {
         return next(error);
       } else {
@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
 });
 
 //POST route for updating data
-router.post('/', function (req, res, next) {
+router.post('/', (req, res, next) => {
   // confirm that user typed same password twice
   if (req.body.password !== req.body.passwordConf) {
     var err = new Error('Passwords do not match.');
@@ -47,7 +47,7 @@ router.post('/', function (req, res, next) {
       role:req.body.role,
     }
 
-    User.create(userData, function (error, user) {
+    User.create(userData, (error, user) => {
       if (error) {
         return next(error);
       } else {

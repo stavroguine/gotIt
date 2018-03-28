@@ -1,35 +1,39 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../model/usertools');
+const express = require('express');
+const router = express.Router();
+const {
+  getUsername,
+  authenticate
+} = require('../model/action');
 
-router.get('/', function(req, res, next) {
-  User.findById(req.session.userId)
-  .exec(function (error, user) {
-    if (error) {
-      return next(error);
-    } else {
-      if (user === null) {
-        res.render('login', { title: 'Login now !' });
-      } else {
-        return res.redirect('/user/'+user.username);
-      }
-    }
-  });
+
+router.get('/', (req, res, next) => {
+  console.log(req.session.userId);
+  if(req.session.userId){
+    getUsername(req.session).then((username)=>{
+      return res.redirect('/user/'+username);
+    }).catch(e=>{
+      console.log(e);
+      res.render('error',{e:e})
+    })
+  } else {
+    res.render('login', { title: 'Login now !' });
+  }
 });
 
-router.post('/', function (req, res, next) {
+router.post('/', (req, res, next) => {
   if (req.body.email && req.body.password) {
-    User.authenticate(req.body.email, req.body.password, function (error, user) {
-      if (error || !user) {
-          var err = new Error('Wrong email or password.');
-          err.status = 401;
-          return next(err);
-      } else {
-        req.session.userId = user._id;
-        req.session.role = user.role;
-        return res.redirect('/user/'+user.username);
-      }
-    });
+    let credentials = {
+      email: req.body.email,
+      password: req.body.password,
+    }
+    authenticate(credentials).then((user)=>{
+      req.session.userId = user._id;
+      req.session.role = user.role;
+      return res.redirect('/user/'+user.username);
+    }).catch(e=>{
+      console.log(e);
+      res.render('error',{e:e})
+    })
   }
 })
 

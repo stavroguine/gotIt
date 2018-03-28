@@ -5,14 +5,14 @@ var User = require('../model/usertools');
 
 
 /* Unlogged. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
   res.redirect('/login');
 });
 
 /* GET user page. */
-router.get('/:id', function(req, res, next) {
+router.get('/:id', (req, res, next) => {
   User.findById(req.session.userId)
-  .exec(function (error, user) {
+  .exec((error, user) => {
     if (error) {
       return next(error);
     } else {

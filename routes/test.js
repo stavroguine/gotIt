@@ -3,7 +3,7 @@ var router = express.Router();
 var User = require('../model/usertools');
 
 /* Teeest page. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
     if (req.session.views) {
       req.session.views++
       res.setHeader('Content-Type', 'text/html')

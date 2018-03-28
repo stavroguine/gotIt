@@ -1,32 +1,28 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../model/usertools');
-var Form = require('../model/formtools');
+const express = require('express');
+const router = express.Router();
+const {
+  getUserObject,
+  getRole,
+  getForms
+} = require('../model/action');
 
 /* Admin page. */
-router.get('/', function(req, res, next) {
-  User.findById(req.session.userId)
-  .exec(function (error, user) {
-    if (error) {
-      return next(error);
-    } else {
-      if (user === null) {
-        var err = new Error('Not authorized! Go back!');
-        err.status = 400;
-        return next(err);
-      } else {
-        if(req.session.role == "Admin"){
-          Form.find({}, function(err, forms) {
-            return res.render('admin', { user: user, forms: forms });
-           });
-        } else {
-          var err = new Error('Not authorized! Admin zone !!!');
-          err.status = 400;
-          return next(err);
-        }
+router.get('/',(req, res, next) => {
+  getUserObject(req.session).then((user)=>{
+    getRole(req.session).then((role)=>{
+      if(role == "Admin"){
+        getForms().then((forms)=>{
+          return res.render('admin', { user: user, forms: forms });
+        }).catch(e=>{
+          res.render('error',{e:e})
+        })
       }
-    }
-  });
+    }).catch(e=>{
+      res.render('error',{e:e})
+    })
+  }).catch(e=>{
+    res.render('error',{e:e})
+  })
 });
 
 module.exports = router;
