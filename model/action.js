@@ -75,6 +75,21 @@ action.authenticate = (credentials) => {
     })
 }
 
+action.userCreate = (userData) => {
+    return new Promise((resolve, reject)=>{
+        User.create(userData, (error, user) => {
+            if (error) {
+                console.log(error);
+                var err = new Error('User already registred.');
+                err.status = 418;
+                reject(err);            
+            } else {
+                resolve(user);
+            }
+        });
+    })
+}
+
 /* Forms Action */
 action.getForms = () => {
     return new Promise((resolve, reject)=>{

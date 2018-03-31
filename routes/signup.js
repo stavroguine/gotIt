@@ -1,24 +1,19 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../model/usertools');
+var {
+  getUsername
+} = require('../model/action');
+
 
 /* Signup. */
 router.get('/', (req, res, next) => {
   if(req.session){
-    User.findById(req.session.userId)
-    .exec((error, user) => {
-      if (error) {
-        return next(error);
-      } else {
-        if (user === null) {
-          var err = new Error('Not authorized! Go back!');
-          err.status = 400;
-          return next(err);
-        } else {
-          return res.redirect('/user/'+user.username);
-        }
-      }
-    });
+    getUsername(req.session).then((username) => {
+      return res.redirect('/user/'+username);
+    }).catch(e=>{
+      res.render('signup', { title: 'Register now !' });
+    })
   } else {
     res.render('signup', { title: 'Register now !' });
   }
@@ -26,7 +21,6 @@ router.get('/', (req, res, next) => {
 
 //POST route for updating data
 router.post('/', (req, res, next) => {
-  // confirm that user typed same password twice
   if (req.body.password !== req.body.passwordConf) {
     var err = new Error('Passwords do not match.');
     err.status = 400;
@@ -48,6 +42,7 @@ router.post('/', (req, res, next) => {
     }
 
     User.create(userData, (error, user) => {
+      console.log("signup js = "+userData.password);
       if (error) {
         return next(error);
       } else {
