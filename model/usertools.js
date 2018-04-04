@@ -1,5 +1,8 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
+const util = require('util');
+const SALT_WORK_FACTOR = 10;
+
 
 var UserSchema = new mongoose.Schema({
   email: {
@@ -50,16 +53,19 @@ UserSchema.statics.authenticate = (email, password, callback) => {
 }
 
 //hashing a password before saving it to the database
-UserSchema.pre('save', (next) => {
+UserSchema.pre('save', function (next) {
   var user = this;
-  console.log(user.password);
-  bcrypt.hash(user.password, 10, (err, hash) => {
-    if (err) {
-      return next(err);
-    }
-    user.password = hash;
-    next();
-  })
+  //console.log("usertools = "+this);
+  console.log("usertools = ",`Running test at ${new Date().toISOString()}`);
+  //console.log("usertools = "+util.inspect(this, {showHidden: false, depth: null}))
+  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+    if (err) return next(err);
+    bcrypt.hash(user.password, salt, (err, hash) => {
+      if (err) return next(err);
+      user.password = hash;
+      next();
+    })
+  });
 });
 
 

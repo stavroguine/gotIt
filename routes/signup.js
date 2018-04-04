@@ -42,7 +42,7 @@ router.post('/', (req, res, next) => {
     }
 
     User.create(userData, (error, user) => {
-      console.log("signup js = "+userData.password);
+      console.log("signup js = ",`Running test at ${new Date().toISOString()}`);
       if (error) {
         return next(error);
       } else {
