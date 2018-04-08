@@ -18,10 +18,20 @@ var signup = require('./routes/signup');
 var logout = require('./routes/logout');
 var test = require('./routes/test');
 var form = require('./routes/form');
+var api = require('./routes/api');
 // var authenticate = require("./tools/authentication");
 
 //connect to MongoDB
-mongoose.connect('mongodb://mongo:27017/gotit');
+let mongodburl;
+let mongo_ip = process.env.MONGO_IP || 'localhost' ;
+if(typeof process.env.MONGO_PORT !== 'undefined' && process.env.MONGO_PORT){
+  let mongo_port
+  mongodburl = 'mongodb://'+ mongo_ip + ':' + mongo_port + '/gotit';  
+} else {
+  mongodburl = 'mongodb://'+ mongo_ip + '/gotit';
+}
+console.log(mongodburl);
+mongoose.connect(mongodburl);
 var db = mongoose.connection;
 
 //handle mongo error
@@ -61,6 +71,7 @@ app.use('/signup', signup);
 app.use('/logout', logout);
 app.use('/test', test);
 app.use('/form', form);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
