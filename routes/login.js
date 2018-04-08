@@ -37,4 +37,22 @@ router.post('/', (req, res, next) => {
   }
 })
 
+
+router.post('/api', (req, res, next) => {
+    if (req.body.email && req.body.password) {
+        let credentials = {
+            email: req.body.email,
+            password: req.body.password,
+        }
+        authenticate(credentials).then((user)=>{
+            req.session.userId = user._id;
+            req.session.role = user.role;
+            return res.json(user);
+        }).catch(e=>{
+            console.log(e);
+            res.json(e)
+        })
+    }
+})
+
 module.exports = router;
