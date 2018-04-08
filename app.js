@@ -21,7 +21,7 @@ var form = require('./routes/form');
 // var authenticate = require("./tools/authentication");
 
 //connect to MongoDB
-mongoose.connect('mongodb://localhost/gotit');
+mongoose.connect('mongodb://mongo:27017/gotit');
 var db = mongoose.connection;
 
 //handle mongo error
