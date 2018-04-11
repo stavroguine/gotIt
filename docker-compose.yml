@@ -1,4 +1,11 @@
 version: '3'
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: false
+
 services:
   app:
     container_name: app
@@ -6,8 +13,16 @@ services:
     build: .
     environment:
       - MONGO_IP=mongo
-    ports:
-      - "80:3000"
+    #ports:
+    #  - "80:3000"
+    labels:
+      - traefik.backend=app
+      - traefik.frontend.rule=Host:admin.gotit.behumble.pw
+      - traefik.docker.network=proxy
+      - traefik.port=3000
+    networks:
+      - internal
+      - proxy
     links:
       - mongo
   mongo:
@@ -15,6 +30,10 @@ services:
     image: mongo
     volumes:
       - ./data:/data/db
-    ports:
-      - "27017:27017"
+    #ports:
+    #  - "27017:27017"
+    networks:
+      - internal
+    labels:
+      - traefik.enable=false
 
