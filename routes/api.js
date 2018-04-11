@@ -20,6 +20,8 @@ router.post('/login', (req, res, next) => {
             console.log(e);
             res.json(e)
         })
+    } else {
+        res.status(400).send('Request incorrect');
     }
 })
 
