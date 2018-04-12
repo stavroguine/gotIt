@@ -40,10 +40,6 @@ services:
     container_name: front
     restart: always
     build: ./frontApp
-    environment:
-      - MONGO_IP=mongo
-    #ports:
-    #  - "80:3000"
     labels:
       - traefik.backend=front
       - traefik.frontend.rule=Host:gotit.behumble.pw
