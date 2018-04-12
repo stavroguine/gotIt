@@ -36,4 +36,19 @@ services:
       - internal
     labels:
       - traefik.enable=false
-
+  front:
+    container_name: front
+    restart: always
+    build: ./frontApp
+    environment:
+      - MONGO_IP=mongo
+    #ports:
+    #  - "80:3000"
+    labels:
+      - traefik.backend=front
+      - traefik.frontend.rule=Host:gotit.behumble.pw
+      - traefik.docker.network=proxy
+      - traefik.port=8080
+    networks:
+      - internal
+      - proxy
