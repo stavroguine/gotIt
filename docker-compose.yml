@@ -28,8 +28,8 @@ services:
   mongo:
     container_name: mongo
     image: mongo
-    volumes:
-      - ./data:/data/db
+    #volumes:
+    #  - ./data:/data/db
     #ports:
     #  - "27017:27017"
     networks:
@@ -44,7 +44,7 @@ services:
       - traefik.backend=front
       - traefik.frontend.rule=Host:gotit.behumble.pw
       - traefik.docker.network=proxy
-      - traefik.port=8080
+      - traefik.port=80
     networks:
       - internal
       - proxy
