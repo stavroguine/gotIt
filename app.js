@@ -63,6 +63,7 @@ app.use(cookieParser());
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "https://gotit.behumble.pw");
+    next();
 })
 // app.use(authenticate);
 app.use(express.static(path.join(__dirname, 'public')));
