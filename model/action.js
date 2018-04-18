@@ -65,9 +65,10 @@ action.authenticate = (credentials) => {
     return new Promise((resolve, reject)=>{
         User.authenticate(credentials.email, credentials.password, (error, user) => {
             if (error || !user) {
+                console.log(error);
                 var err = new Error('Wrong email or password.');
                 err.status = 401;
-                reject(err);
+                reject(error);
             } else {
               resolve(user);
             }
