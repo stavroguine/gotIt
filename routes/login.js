@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
       return res.redirect('/user/'+username);
     }).catch(e=>{
       console.log(e);
-      res.render('error',{e:e})
+      res.render('error',{message:'ok',error:e})
     })
   } else {
     res.render('login', { title: 'Login now !' });
