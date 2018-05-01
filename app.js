@@ -66,7 +66,6 @@ app.use(function(req, res, next) {
     //req.app.get('env') === 'development' ? console.log('dev') : console.log('prod')
     if(mongo_ip === 'localhost')
       origin = 'http://localhost:8080'
-    console.log(origin)
     res.header('Access-Control-Allow-Origin', origin);
     res.header('Access-Control-Allow-Credentials',true);
     next();
